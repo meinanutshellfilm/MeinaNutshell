@@ -233,6 +233,141 @@ body, * { cursor: none !important; }
   50%      { transform: translateY(-6px) rotate(5deg); }
 }
 
+
+/* ════════════════════════════
+   MOBILE RESPONSIVE
+════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* NAV */
+  nav { padding: 0.75rem 1.25rem; }
+  .nav-links { gap: 1.1rem; }
+  .nav-links a { font-size: 0.85rem; }
+  .nav-logo { height: 32px; }
+
+  /* HOME HERO */
+  .hero-title { font-size: clamp(2.8rem, 14vw, 5rem); }
+  .hero-body { font-size: 0.95rem; }
+  .hero-badges { gap: 0.5rem; }
+  .hero-badge { font-size: 0.72rem; padding: 0.35rem 0.85rem; }
+
+  /* FILM STRIPS */
+  .film-frame { width: 180px; height: 140px; }
+  .strip-overlay-title { font-size: clamp(1.6rem, 7vw, 2.8rem); }
+  .strip-overlay-btn { font-size: 0.82rem; padding: 0.5rem 1.2rem; }
+
+  /* PAGE HEADERS */
+  .page-title { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+
+  /* TIMELINE — stack vertically on mobile */
+  .tl-stage {
+    flex-direction: column;
+    gap: 0;
+  }
+  .tl-track-col {
+    position: relative;
+    top: auto;
+    width: 100%;
+    height: 90px;
+    margin-bottom: 1.5rem;
+  }
+  /* horizontal track on mobile */
+  .tl-track {
+    width: 100%;
+    height: 100%;
+  }
+  .tl-track::before {
+    top: 50%; bottom: auto;
+    left: 20px; right: 20px;
+    width: auto; height: 4px;
+    transform: translateY(-50%);
+  }
+  .tl-fill {
+    top: 50%; left: 20px;
+    transform: translateY(-50%);
+    width: 0%; height: 4px;
+    clip-path: inset(0 90px 0 0);
+    transition: width 0.25s cubic-bezier(.4,0,.2,1);
+  }
+  .tl-dot {
+    top: 50% !important;
+    transform: translateY(-50%);
+  }
+  #dot-0 { left: 5% !important; transform: translateY(-50%) !important; }
+  #dot-1 { left: 38% !important; transform: translateY(-50%) !important; }
+  #dot-2 { left: 73% !important; transform: translateY(-50%) !important; }
+  .tl-dot-label {
+    left: 50%; top: calc(100% + 8px);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.65rem;
+  }
+  .tl-blueberry {
+    top: 50% !important;
+    left: 5%;
+    transform: translateY(-50%);
+    width: 56px;
+    transition: left 0.25s cubic-bezier(.34,1.4,.64,1);
+  }
+  .tl-me {
+    bottom: auto;
+    top: 50%;
+    right: 10px; left: auto;
+    transform: translateY(-50%);
+    width: 64px;
+  }
+  .tl-panels-col {
+    min-height: 340px;
+    width: 100%;
+  }
+  .tl-panel { padding: 1.25rem; }
+  .tl-panel h3 { font-size: 1.2rem; }
+  .panel-entry p { font-size: 0.82rem; }
+  .drag-hint { top: -22px; font-size: 0.62rem; }
+
+  /* GALLERY */
+  .glass-body { padding: 2rem 1rem 1.5rem; }
+  .bb-btn { width: 70px; height: 70px; }
+  .bb-btn img { width: 56px; }
+  .gallery-cap { padding: 0.75rem 1rem; }
+  .gallery-cap h4 { font-size: 0.95rem; }
+  .gallery-cap p { font-size: 0.78rem; }
+
+  /* TEAM GRID */
+  .team-wide { padding: 2rem 1rem 4rem; }
+  .team-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.85rem; }
+  .member-card { padding: 1.1rem 0.9rem; }
+  .member-avatar { width: 48px; height: 48px; font-size: 1rem; }
+  .member-name { font-size: 0.88rem; }
+  .member-role { font-size: 0.72rem; }
+
+  /* PROFILE OVERLAY */
+  .profile-inner { flex-direction: column; gap: 1.5rem; align-items: center; padding-top: 2rem; }
+  .profile-photo-wrap { width: 200px; height: 240px; }
+  .profile-name { font-size: 1.6rem; }
+  .profile-bio { font-size: 0.88rem; }
+  .profile-back { top: 0.5rem; left: 0.5rem; }
+
+  /* POSTER PANEL */
+  #panel-poster img { max-width: 260px; }
+  #panel-poster .poster-date { font-size: 1.8rem; }
+
+  /* TIMELINE SECTION PADDING */
+  .timeline-section { padding: 2rem 1rem 3rem; }
+  .timeline-heading { font-size: 1.6rem; }
+
+  /* BEE CURSOR — hide on touch devices */
+  #bee-cursor { display: none; }
+}
+
+@media (max-width: 480px) {
+  .nav-links { gap: 0.75rem; }
+  .nav-links a { font-size: 0.78rem; }
+  .hero-title { font-size: clamp(2.2rem, 12vw, 4rem); }
+  .strips-section { gap: 2px; }
+  .film-frame { width: 150px; height: 116px; }
+}
+
 </style>
 </head>
 <body>
@@ -673,6 +808,73 @@ document.getElementById('profile-overlay').addEventListener('click',function(e){
 
   // Init
   current = getCurrentPage();
+})();
+
+
+/* ── MOBILE HORIZONTAL TIMELINE ── */
+(function(){
+  if(window.innerWidth > 768) return; // desktop handled by existing code
+
+  const track = document.getElementById('tl-track');
+  const bb = document.getElementById('tl-blueberry');
+  const meEl = document.getElementById('tl-me');
+  const fill = document.getElementById('tl-fill');
+  const DOT_IDS = ['dot-0','dot-1','dot-2',null];
+  const PANEL_IDS = ['panel-0','panel-1','panel-2','panel-poster'];
+  // horizontal fractions matching left% positions
+  const DOT_FRAC = [0.05, 0.38, 0.73, 0.95];
+  let dragging = false, snappedTo = -1;
+
+  function trackW(){ return track.offsetWidth - 40; }
+
+  function snapToH(idx){
+    if(snappedTo === idx) return;
+    snappedTo = idx;
+    const pct = DOT_FRAC[idx];
+    bb.style.left = (20 + pct * trackW()) + 'px';
+    fill.style.width = (pct * 100) + '%';
+    DOT_IDS.forEach((id,i)=>{ if(id) document.getElementById(id).classList.toggle('reached', i<=idx); });
+    const activePanel = PANEL_IDS[idx];
+    ['panel-0','panel-1','panel-2','panel-poster'].forEach(id=>{
+      document.getElementById(id).classList.toggle('active', id===activePanel);
+    });
+    meEl.classList.toggle('wobble', idx===3);
+  }
+
+  function setRawH(rawX){
+    const w = trackW();
+    const p = Math.max(0, Math.min(1, (rawX-20)/w));
+    let ci=0, md=Infinity;
+    DOT_FRAC.forEach((f,i)=>{ const d=Math.abs(p-f); if(d<md){md=d;ci=i;} });
+    if(md < 0.08){ snapToH(ci); }
+    else {
+      bb.style.left = (20 + p*w) + 'px';
+      fill.style.width = (p*100)+'%';
+      if(snappedTo>=0 && Math.abs(p-DOT_FRAC[snappedTo])>0.08){
+        ['panel-0','panel-1','panel-2','panel-poster'].forEach(id=>document.getElementById(id).classList.remove('active'));
+        DOT_IDS.forEach((id,i)=>{ if(id) document.getElementById(id).classList.toggle('reached', DOT_FRAC[i]<=p+0.02); });
+        snappedTo=-1; meEl.classList.remove('wobble');
+      }
+    }
+  }
+
+  function snapNearestH(){
+    const w=trackW();
+    const cur=(parseFloat(bb.style.left||'20')-20)/w;
+    let ci=0,md=Infinity;
+    DOT_FRAC.forEach((f,i)=>{ const d=Math.abs(cur-f); if(d<md){md=d;ci=i;} });
+    snapToH(ci);
+  }
+
+  bb.addEventListener('touchstart', e=>{ dragging=true; e.stopPropagation(); },{passive:true});
+  window.addEventListener('touchmove', e=>{
+    if(!dragging) return;
+    const r=track.getBoundingClientRect();
+    setRawH(e.touches[0].clientX - r.left);
+  },{passive:true});
+  window.addEventListener('touchend', ()=>{ if(dragging){ if(snappedTo<0)snapNearestH(); dragging=false; } });
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>snapToH(0)));
 })();
 
 </script>
