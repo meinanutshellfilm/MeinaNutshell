@@ -1155,7 +1155,7 @@ function openProfile(card){
   // Convert URLs to clickable links
   var bioHtml = bioText.replace(/(https?:\/\/[^\s]+|[a-zA-Z0-9.-]+\.(?:com|wixsite\.com\/[^\s]+|artstation\.com(?:\/[^\s]+)?)[^\s]*)/g, function(url){
     var href = url.startsWith('http') ? url : 'https://' + url;
-    return '<br><br><a href="' + href + '" target="_blank" rel="noopener" style="color:var(--gold-light);text-decoration:underline;">' + url + '</a>';
+    return '<br><br><a href="' + href + '" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="color:var(--gold-light);text-decoration:underline;">' + url + '</a>';
   });
   document.getElementById('profile-bio').innerHTML = bioHtml;
   var pw = document.getElementById('profile-photo-wrap');
